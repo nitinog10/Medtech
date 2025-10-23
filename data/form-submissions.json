@@ -1,0 +1,38 @@
+[
+  {
+    "fullName": "Abhishek Mishra",
+    "email": "gamerisedevloper@gmail.com",
+    "mobileNumber": "7489078947",
+    "collegeName": "Oriental institute of science and technology",
+    "collegeYear": "2nd Year",
+    "branch": "Electronics & Communication",
+    "collegeCity": "bengaluru",
+    "collegeState": "Karnataka",
+    "timestamp": "2025-10-21T09:33:27.856Z",
+    "id": "1761039207856"
+  },
+  {
+    "fullName": "Nitin Mishra",
+    "email": "nitiniszod10@gmail.com",
+    "mobileNumber": "7489078947",
+    "collegeName": "Lnct group",
+    "collegeYear": "3rd Year",
+    "branch": "Electronics & Communication",
+    "collegeCity": "Bhopal",
+    "collegeState": "Madhya Pradesh",
+    "timestamp": "2025-10-21T09:37:37.404Z",
+    "id": "1761039457404"
+  },
+  {
+    "fullName": "Nitin Mishra",
+    "email": "nitiniszod10@gmail.com",
+    "mobileNumber": "7489078947",
+    "collegeName": "Oriental institute of science and technology",
+    "collegeYear": "2nd Year",
+    "branch": "Nursing",
+    "collegeCity": "Bhopal",
+    "collegeState": "Madhya Pradesh",
+    "timestamp": "2025-10-23T13:31:05.540Z",
+    "id": "1761226265540"
+  }
+]
