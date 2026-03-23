@@ -1,6 +1,8 @@
+```typescript
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from'react'
+import { useSecurityUtils } from 'utils/securityUtils'
 
 interface AdvancedSecurityProps {
   children: React.ReactNode
@@ -9,44 +11,9 @@ interface AdvancedSecurityProps {
 export default function AdvancedSecurity({ children }: AdvancedSecurityProps) {
   const [securityLevel, setSecurityLevel] = useState('high')
   const [isTampered, setIsTampered] = useState(false)
+  const { checkDevTools, checkDebugger, monitorConsole, checkScreenshotTools, applySecurityStyles } = useSecurityUtils(setIsTampered)
 
-  // Detect if page is being inspected or tampered with
   useEffect(() => {
-    // Check for common developer tools
-    const checkDevTools = () => {
-      const threshold = 160
-      if (window.outerHeight - window.innerHeight > threshold || 
-          window.outerWidth - window.innerWidth > threshold) {
-        setIsTampered(true)
-        return true
-      }
-      return false
-    }
-
-    // Check for debugging tools
-    const checkDebugger = () => {
-      const start = performance.now()
-      debugger
-      const end = performance.now()
-      if (end - start > 100) {
-        setIsTampered(true)
-        return true
-      }
-      return false
-    }
-
-    // Monitor console usage
-    const originalConsole = { ...console }
-    console.log = (...args) => {
-      setIsTampered(true)
-      return originalConsole.log(...args)
-    }
-
-    // Check for iframe embedding (potential screenshot tools)
-    if (window.self !== window.top) {
-      setIsTampered(true)
-    }
-
     const interval = setInterval(() => {
       checkDevTools()
       checkDebugger()
@@ -54,106 +21,15 @@ export default function AdvancedSecurity({ children }: AdvancedSecurityProps) {
 
     return () => {
       clearInterval(interval)
-      console.log = originalConsole.log
+      monitorConsole(false)
     }
-  }, [])
+  }, [checkDevTools, checkDebugger, monitorConsole])
 
-  // Disable common screenshot methods
   useEffect(() => {
-    // Disable print screen
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'PrintScreen') {
-        e.preventDefault()
-        alert('⚠️ Screenshot protection is active!')
-        return false
-      }
-    }
+    checkScreenshotTools()
+  }, [checkScreenshotTools])
 
-    // Disable right-click context menu
-    const handleContextMenu = (e: MouseEvent) => {
-      e.preventDefault()
-      return false
-    }
-
-    // Disable drag and drop
-    const handleDragStart = (e: DragEvent) => {
-      e.preventDefault()
-      return false
-    }
-
-    // Disable text selection
-    const handleSelectStart = (e: Event) => {
-      e.preventDefault()
-      return false
-    }
-
-    document.addEventListener('keydown', handleKeyDown, true)
-    document.addEventListener('contextmenu', handleContextMenu, true)
-    document.addEventListener('dragstart', handleDragStart, true)
-    document.addEventListener('selectstart', handleSelectStart, true)
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown, true)
-      document.removeEventListener('contextmenu', handleContextMenu, true)
-      document.removeEventListener('dragstart', handleDragStart, true)
-      document.removeEventListener('selectstart', handleSelectStart, true)
-    }
-  }, [])
-
-  // Advanced screenshot detection
-  useEffect(() => {
-    // Monitor for screenshot tools
-    const checkScreenshotTools = () => {
-      // Check for common screenshot tool window names
-      const suspiciousWindows = [
-        'Snipping Tool',
-        'Snagit',
-        'Lightshot',
-        'Greenshot',
-        'ShareX',
-        'PicPick'
-      ]
-
-      // This is a simplified check - in reality, detecting external tools is complex
-      if (navigator.userAgent.includes('SnippingTool') || 
-          navigator.userAgent.includes('Snagit')) {
-        setIsTampered(true)
-      }
-    }
-
-    const interval = setInterval(checkScreenshotTools, 2000)
-    return () => clearInterval(interval)
-  }, [])
-
-  // Content protection based on security level
-  const getSecurityStyles = () => {
-    switch (securityLevel) {
-      case 'high':
-        return {
-          filter: isTampered ? 'blur(10px) brightness(0.3)' : 'none',
-          pointerEvents: isTampered ? 'none' : 'auto',
-          userSelect: 'none',
-          WebkitUserSelect: 'none',
-          MozUserSelect: 'none',
-          msUserSelect: 'none'
-        }
-      case 'medium':
-        return {
-          filter: isTampered ? 'blur(5px)' : 'none',
-          userSelect: 'none',
-          WebkitUserSelect: 'none',
-          MozUserSelect: 'none',
-          msUserSelect: 'none'
-        }
-      default:
-        return {
-          userSelect: 'none',
-          WebkitUserSelect: 'none',
-          MozUserSelect: 'none',
-          msUserSelect: 'none'
-        }
-    }
-  }
+  const getSecurityStyles = () => applySecurityStyles(securityLevel, isTampered)
 
   return (
     <div 
@@ -181,3 +57,98 @@ export default function AdvancedSecurity({ children }: AdvancedSecurityProps) {
     </div>
   )
 }
+```
+
+```typescript
+// File: utils/securityUtils.ts
+
+import { useEffect } from'react'
+
+export const useSecurityUtils = (setIsTampered: (value: boolean) => void) => {
+  const checkDevTools = () => {
+    const threshold = 160
+    if (window.outerHeight - window.innerHeight > threshold || 
+        window.outerWidth - window.innerWidth > threshold) {
+      setIsTampered(true)
+      return true
+    }
+    return false
+  }
+
+  const checkDebugger = () => {
+    const start = performance.now()
+    debugger
+    const end = performance.now()
+    if (end - start > 100) {
+      setIsTampered(true)
+      return true
+    }
+    return false
+  }
+
+  const monitorConsole = (enable: boolean) => {
+    const originalConsole = {...console }
+    if (enable) {
+      console.log = (...args) => {
+        setIsTampered(true)
+        return originalConsole.log(...args)
+      }
+    } else {
+      console.log = originalConsole.log
+    }
+  }
+
+  const checkScreenshotTools = () => {
+    const suspiciousWindows = [
+      'Snipping Tool',
+      'Snagit',
+      'Lightshot',
+      'Greenshot',
+      'ShareX',
+      'PicPick'
+    ]
+
+    if (navigator.userAgent.includes('SnippingTool') || 
+        navigator.userAgent.includes('Snagit')) {
+      setIsTampered(true)
+    }
+  }
+
+  const applySecurityStyles = (securityLevel: string, isTampered: boolean) => {
+    switch (securityLevel) {
+      case 'high':
+        return {
+          filter: isTampered ? 'blur(10px) brightness(0.3)' : 'none',
+          pointerEvents: isTampered? 'none' : 'auto',
+          userSelect: 'none',
+          WebkitUserSelect: 'none',
+          MozUserSelect: 'none',
+          msUserSelect: 'none'
+        }
+      case'medium':
+        return {
+          filter: isTampered ? 'blur(5px)' : 'none',
+          userSelect: 'none',
+          WebkitUserSelect: 'none',
+          MozUserSelect: 'none',
+          msUserSelect: 'none'
+        }
+      default:
+        return {
+          userSelect: 'none',
+          WebkitUserSelect: 'none',
+          MozUserSelect: 'none',
+          msUserSelect: 'none'
+        }
+    }
+  }
+
+  return {
+    checkDevTools,
+    checkDebugger,
+    monitorConsole,
+    checkScreenshotTools,
+    applySecurityStyles
+  }
+}
+```
