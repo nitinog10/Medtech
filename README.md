@@ -1280,3 +1280,11 @@ No dependencies are directly imported in this file, but it is expected to be rea
 - Ensure that the JSON file is correctly formatted; malformed JSON can cause parsing errors.
 - The `mobileNumber` field contains duplicate values, which may indicate a data entry issue.
 
+## Code Improvements Applied
+
+- Added regression tests for high-risk files:
+  - `app/components/ScreenshotProtection.tsx`
+  - `app/components/AggressiveProtection.tsx`
+  - `app/components/AdvancedSecurity.tsx`
+- Proposed extracting shared utility code into a dedicated module.
+- Updated documentation to reflect structural changes.
