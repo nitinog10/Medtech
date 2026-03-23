@@ -1,6 +1,8 @@
+```
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from'react'
+import { detectDevTools, handleKeyDown, handleContextMenu, handleVisibilityChange, handleBeforePrint } from '../utils/protectionUtils'
 
 interface ScreenshotProtectionProps {
   children: React.ReactNode
@@ -20,156 +22,32 @@ export default function ScreenshotProtection({
   const [devToolsOpen, setDevToolsOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
 
-  // Enhanced DevTools detection
   useEffect(() => {
-    if (!enableDevToolsDetection) return
-
-    let devtools = { open: false, orientation: null }
-    const threshold = 160
-    let detectionCount = 0
-
-    const detectDevTools = () => {
-      // Multiple detection methods
-      const heightDiff = window.outerHeight - window.innerHeight
-      const widthDiff = window.outerWidth - window.innerWidth
-      const isDevToolsOpen = heightDiff > threshold || widthDiff > threshold
-      
-      // Additional detection methods
-      const isConsoleOpen = window.outerHeight - window.innerHeight > 200
-      const isElementsOpen = window.outerWidth - window.innerWidth > 200
-      
-      if (isDevToolsOpen || isConsoleOpen || isElementsOpen) {
-        detectionCount++
-        if (detectionCount >= 2) { // Require multiple detections
-          if (!devtools.open) {
-            devtools.open = true
-            setDevToolsOpen(true)
-            console.clear()
-            console.log('%c🚫 SCREENSHOT PROTECTION ACTIVE', 'color: red; font-size: 24px; font-weight: bold;')
-            console.log('%c⚠️ Developer Tools Detected!', 'color: red; font-size: 20px; font-weight: bold;')
-            console.log('%cScreenshot protection is active. Please close developer tools to continue.', 'color: red; font-size: 14px;')
-            
-            // Aggressive content protection
-            if (containerRef.current) {
-              containerRef.current.style.filter = 'blur(10px) brightness(0.3)'
-              containerRef.current.style.pointerEvents = 'none'
-              containerRef.current.style.userSelect = 'none'
-            }
-            
-            // Hide content completely after 3 seconds
-            setTimeout(() => {
-              if (containerRef.current) {
-                containerRef.current.style.display = 'none'
-              }
-            }, 3000)
-          }
-        }
-      } else {
-        if (devtools.open) {
-          devtools.open = false
-          setDevToolsOpen(false)
-          detectionCount = 0
-          if (containerRef.current) {
-            containerRef.current.style.filter = 'none'
-            containerRef.current.style.pointerEvents = 'auto'
-            containerRef.current.style.display = 'block'
-          }
-        }
-      }
+    if (enableDevToolsDetection) {
+      detectDevTools(setDevToolsOpen, containerRef)
     }
-
-    // More frequent detection
-    const interval = setInterval(detectDevTools, 100)
-    return () => clearInterval(interval)
   }, [enableDevToolsDetection])
 
-  // Keyboard shortcut protection
   useEffect(() => {
-    if (!enableKeyboardProtection) return
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+S, Ctrl+A, Ctrl+C, Ctrl+V
-      if (
-        e.key === 'F12' ||
-        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) ||
-        (e.ctrlKey && e.key === 'u') ||
-        (e.ctrlKey && e.key === 's') ||
-        (e.ctrlKey && e.key === 'a') ||
-        (e.ctrlKey && e.key === 'c') ||
-        (e.ctrlKey && e.key === 'v') ||
-        (e.ctrlKey && e.key === 'p') ||
-        (e.ctrlKey && e.key === 'PrintScreen')
-      ) {
-        e.preventDefault()
-        e.stopPropagation()
-        
-        // Show warning
-        alert('⚠️ Screenshot protection is active. This action is not allowed.')
-        return false
-      }
+    if (enableKeyboardProtection) {
+      handleKeyDown()
     }
-
-    document.addEventListener('keydown', handleKeyDown, true)
-    return () => document.removeEventListener('keydown', handleKeyDown, true)
   }, [enableKeyboardProtection])
 
-  // Context menu protection
   useEffect(() => {
-    if (!enableContextMenuProtection) return
-
-    const handleContextMenu = (e: MouseEvent) => {
-      e.preventDefault()
-      e.stopPropagation()
-      return false
-    }
-
-    const handleSelectStart = (e: Event) => {
-      e.preventDefault()
-      return false
-    }
-
-    const handleDragStart = (e: DragEvent) => {
-      e.preventDefault()
-      return false
-    }
-
-    document.addEventListener('contextmenu', handleContextMenu, true)
-    document.addEventListener('selectstart', handleSelectStart, true)
-    document.addEventListener('dragstart', handleDragStart, true)
-
-    return () => {
-      document.removeEventListener('contextmenu', handleContextMenu, true)
-      document.removeEventListener('selectstart', handleSelectStart, true)
-      document.removeEventListener('dragstart', handleDragStart, true)
+    if (enableContextMenuProtection) {
+      handleContextMenu()
     }
   }, [enableContextMenuProtection])
 
-  // Screenshot detection using visibility API
   useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-        // Page is hidden, might be taking screenshot
-        console.log('Page visibility changed - potential screenshot detected')
-      }
-    }
-
-    document.addEventListener('visibilitychange', handleVisibilityChange)
-    return () => document.removeEventListener('visibilitychange', handleVisibilityChange)
+    handleVisibilityChange()
   }, [])
 
-  // Disable print
   useEffect(() => {
-    const handleBeforePrint = (e: Event) => {
-      e.preventDefault()
-      alert('⚠️ Printing is disabled for security reasons.')
-      return false
-    }
-
-    window.addEventListener('beforeprint', handleBeforePrint)
-    return () => window.removeEventListener('beforeprint', handleBeforePrint)
+    handleBeforePrint()
   }, [])
 
-  // Watermark component
   const WatermarkOverlay = () => {
     if (!enableWatermark) return null
 
@@ -197,7 +75,7 @@ export default function ScreenshotProtection({
       ref={containerRef}
       className="screenshot-protected protected-content no-capture no-context-menu"
       style={{
-        position: 'relative',
+        position:'relative',
         userSelect: 'none',
         WebkitUserSelect: 'none',
         MozUserSelect: 'none',
@@ -223,3 +101,4 @@ export default function ScreenshotProtection({
     </div>
   )
 }
+```
