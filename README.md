@@ -4,44 +4,72 @@
 
 ## Overview
 
-This project is a hospital landing page with an embedded eBook form, built using Next.js and TypeScript. The primary function is to collect form submissions from users, which are stored in both `CSV` and `JSON` formats within the `data` directory. The application features several security components such as `AdvancedSecurity.tsx`, `AggressiveProtection.tsx`, and `CanvasProtection.tsx` to safeguard content. 
+The `repo_80c721a9917d` repository contains a Next.js application designed to serve as a hospital landing page with an eBook form. The primary purpose of this project is to allow users to submit a form to access an eBook, while ensuring that sensitive content is protected from being captured via screenshots. The application is structured to handle form submissions, store data, and provide an admin interface for managing submissions.
 
-The tech stack includes Next.js for the framework, TypeScript for type safety, Tailwind CSS for styling, and PostCSS for additional CSS processing. The project is configured via `next.config.js`, `tailwind.config.js`, and `postcss.config.js`. Environment variables are managed through `env.example` and `tsconfig.json` ensures TypeScript settings are correctly applied.
+The tech stack includes `Next.js` for the React-based framework, `Tailwind CSS` for styling, and `TypeScript` for type safety. The project utilizes various security components such as `AdvancedSecurity.tsx`, `AggressiveProtection.tsx`, and `ScreenshotProtection.tsx` to safeguard content. The API routes defined in the `app/api` directory handle form submissions and data retrieval.
 
-The folder structure is organized to separate concerns: the `app` directory contains the main application logic, `api` routes handle backend operations, and `components` house reusable UI elements. The `config` folder stores security settings, while `data` holds form submission records. This setup allows for easy maintenance and scaling of the application. 
+Key files and their roles:
+- `INSTALLATION.md`: Provides installation instructions.
+- `README.md`: Offers an overview of the hospital landing page with the eBook form.
+- `SCREENSHOT_PROTECTION.md`: Details the implementation of screenshot protection.
+- `env.example`: Contains configuration settings for accessing Google Sheets.
+- `next.config.js`: Configures the Next.js application.
+- `tailwind.config.js`: Configures Tailwind CSS.
+- `tsconfig.json`: Configures the TypeScript compiler.
+- `app/components/`: Houses React components for various security features and UI elements.
+- `app/api/`: Contains API routes for form submission and data handling.
+- `data/`: Stores form submission data in CSV and JSON formats.
 
-The target users are hospital administrators and patients, where administrators can view and download form submissions via the admin dashboard, and patients can submit their information through the embedded form.
+This project is intended for use by hospital administrators and patients who need to access educational materials in a secure manner.
 
 ## Architecture
 
 ```markdown
-- **Code Organization**:
-  - The codebase is structured using a modular approach, with clear separation of concerns.
-  - The `app/` directory contains the main application logic, divided into subdirectories for global styles, layouts, pages, API routes, components, and configuration.
-  - The `data/` directory stores form submission data in both CSV and JSON formats.
+## Architecture Overview
 
-- **Layers and Modules**:
-  - **Global Styles**: `app/globals.css` contains global CSS styles applied throughout the application.
-  - **Layouts**: `app/layout.tsx` defines the overall layout structure.
-  - **Pages**: `app/page.tsx` and `app/admin/page.tsx` represent the main and admin dashboard pages, respectively.
-  - **API Routes**: The `app/api/` directory contains route handlers for various API endpoints, such as form submissions and CSV downloads.
-  - **Components**: The `app/components/` directory houses reusable React components for security features and UI elements.
-  - **Configuration**: `app/config/security.ts` centralizes security-related configurations.
+### Code Organization
 
-- **Data Flow**:
-  - User interactions trigger form submissions, which are handled by API routes in `app/api/`.
-  - Submitted data is stored in `data/form-submissions.csv` and `data/form-submissions.json`.
-  - The admin dashboard (`app/admin/page.tsx`) displays and manages form submissions.
+The codebase is structured into several key layers and modules:
 
-- **Key Design Patterns**:
-  - **Modularization**: The codebase is divided into small, reusable modules, promoting maintainability and scalability.
-  - **Separation of Concerns**: Different aspects of the application (styles, layouts, components, configurations) are kept in separate files and directories.
-  - **Single Responsibility Principle**: Each component and module is responsible for a specific task, enhancing code clarity and ease of maintenance.
+- **Root Level**: Contains configuration files and setup scripts.
+  - `INSTALLATION.md`, `README.md`, `SCREENSHOT_PROTECTION.md`: Documentation files.
+  - `env.example`, `medtech-475803-d7421664ff6e.json`: Environment and configuration files.
+  - `next-env.d.ts`, `next.config.js`, `postcss.config.js`, `tailwind.config.js`, `test-setup.js`, `tsconfig.json`: Configuration files for various tools and frameworks.
+  - `setup.js`: Initializes the environment.
 
-- **Main Entry Points**:
-  - The primary entry point for the application is `app/page.tsx`, which renders the main landing page.
-  - The admin dashboard is accessed via `app/admin/page.tsx`.
-  - API interactions are managed through routes defined in `app/api/`.
+- **`app/` Directory**: Houses the main application code.
+  - `globals.css`, `layout.tsx`, `page.tsx`: Global styles and layout components.
+  - `admin/`: Contains the admin dashboard.
+  - `api/`: API routes for handling form submissions and data retrieval.
+  - `components/`: Reusable React components for various functionalities.
+  - `config/`: Configuration files specific to the application.
+
+- **`data/` Directory**: Stores data files.
+  - `form-submissions.csv`, `form-submissions.json`: Data files for form submissions.
+
+### Data Flow
+
+1. **User Interaction**: Users interact with the application through the UI components defined in `app/components/`.
+2. **Form Submission**: When a user submits a form, the data is sent to the API routes defined in `app/api/`.
+3. **API Processing**:
+   - `submit-form/route.ts`: Handles form submissions and stores the data.
+   - `get-submissions/route.ts`: Retrieves form submission data.
+   - `download-csv/route.ts`: Allows downloading form submissions as a CSV file.
+4. **Data Storage**: Form submission data is stored in `data/form-submissions.csv` and `data/form-submissions.json`.
+5. **Admin Dashboard**: The admin can view and manage form submissions through the dashboard in `app/admin/page.tsx`.
+
+### Key Design Patterns
+
+- **Component-Based Architecture**: The application uses a component-based approach with React, allowing for reusable and maintainable UI elements.
+- **API Routes**: Next.js API routes are used to handle backend logic, keeping the frontend and backend concerns separated.
+- **Configuration Management**: Environment variables and configuration files are used to manage settings and secrets.
+
+### Main Entry Points
+
+- **`app/page.tsx`**: The main page component that renders the hospital landing page.
+- **`app/api/`**: API routes for form submissions and data management.
+- **`app/admin/page.tsx`**: Entry point for the admin dashboard.
+- **`setup.js`**: Initializes the environment and sets up the application.
 ```
 
 ## Folder Structure
@@ -89,27 +117,27 @@ The target users are hospital administrators and patients, where administrators 
 
 ## Dependencies
 
-## Dependencies
+### Dependencies
 
-### Production Dependencies
+#### Production Dependencies
 
-- **autoprefixer** (`^10.4.16`): A PostCSS plugin to parse CSS and add vendor prefixes to CSS rules using values from [Can I Use](https://caniuse.com/).
-- **framer-motion** (`^10.16.16`): A production-ready motion library for React, used for animations.
-- **googleapis** (`^128.0.0`): A client library for accessing Google APIs.
-- **lucide-react** (`^0.294.0`): A set of React components based on the Lucide icon set.
-- **next** (`14.0.4`): A React framework for production, providing server-side rendering and static site generation.
+- **autoprefixer** (`^10.4.16`): A PostCSS plugin to parse CSS and add vendor prefixes to rules by examining the usage of at-rules.
+- **framer-motion** (`^10.16.16`): A library for building animations and gestures in React.
+- **googleapis** (`^128.0.0`): A library to interact with Google APIs.
+- **lucide-react** (`^0.294.0`): A set of React components based on Lucide icons.
+- **next** (`14.0.4`): A React framework for production-grade applications.
 - **postcss** (`^8.4.32`): A tool for transforming CSS with JavaScript plugins.
 - **react** (`^18`): A JavaScript library for building user interfaces.
-- **react-dom** (`^18`): Provides DOM-specific methods that can be used at the top level of a web app to enable an efficient way of managing DOM elements of the UI.
-- **react-hook-form** (`^7.48.2`): A performant, flexible, and extensible forms library for React.
+- **react-dom** (`^18`): A package that provides DOM-specific methods that can be used at runtime with React.
+- **react-hook-form** (`^7.48.2`): A library for managing forms in React with hooks.
 - **tailwindcss** (`^3.3.6`): A utility-first CSS framework for rapidly building custom user interfaces.
 
-### Development Dependencies
+#### Development Dependencies
 
 - **@types/node** (`^20`): TypeScript definitions for Node.js.
 - **@types/react** (`^18`): TypeScript definitions for React.
 - **@types/react-dom** (`^18`): TypeScript definitions for React DOM.
-- **eslint** (`^8`): A tool for identifying and fixing problems in your JavaScript code.
+- **eslint** (`^8`): A tool for identifying and fixing problems in JavaScript code.
 - **eslint-config-next** (`14.0.4`): ESLint configuration for Next.js projects.
 - **typescript** (`^5`): A typed superset of JavaScript that compiles to plain JavaScript.
 
@@ -123,18 +151,21 @@ The target users are hospital administrators and patients, where administrators 
 
 #### Module Overview
 
-This file provides a step-by-step guide for installing and setting up the application, including environment configuration and initial testing.
+This file provides a step-by-step guide for installing and setting up the application, ensuring that new developers can quickly get the project up and running.
 
 #### Dependencies
 
-- `npm`: Node Package Manager, used for installing project dependencies.
+| Dependency | Purpose |
+| --- | --- |
+| `npm` | Node package manager to install project dependencies |
+| `node` | JavaScript runtime for executing server-side code |
 
 #### Functions
 
-| Step | Command | Description |
-|------|---------|-------------|
-| Install Dependencies | `npm install` | Installs all required npm packages. |
-| Run the Application | `npm run dev` | Starts the development server. |
+| Function | Parameters | Returns | Description |
+| --- | --- | --- | --- |
+| `npm install` | None | None | Installs all required dependencies listed in `package.json` |
+| `npm run dev` | None | None | Starts the development server |
 
 #### Configuration
 
@@ -149,116 +180,11 @@ GOOGLE_CLIENT_EMAIL=your_service_account_email@project.iam.gserviceaccount.com
 GOOGLE_CLIENT_ID=your_client_id
 ```
 
-#### Google Sheets Setup (Optional but Recommended)
+#### Notes
 
-Follow these steps to set up Google Sheets for data collection:
-
-1. **Create Google Cloud Project**
-   - Go to [Google Cloud Console](https://console.cloud.google.com/)
-   - Create a new project or select an existing one
-   - Note down the Project ID
-
-2. **Enable Google Sheets API**
-   - In the Google Cloud Console, go to "APIs & Services" > "Library"
-   - Search for "Google Sheets API"
-   - Click on it and press "Enable"
-
-3. **Create Service Account**
-   - Go to "IAM & Admin" > "Service Accounts"
-   - Click "Create Service Account"
-   - Enter a name (e.g., "medtech-hospital-sheets")
-   - Add description: "Service account for MedTech Hospital data collection"
-   - Click "Create and Continue"
-   - Grant "Editor" role
-   - Click "Done"
-
-4. **Generate Credentials**
-   - Click on the created service account
-   - Go to "Keys" tab
-   - Click "Add Key" > "Create new key"
-   - Choose "JSON" format
-   - Download the JSON file
-
-5. **Create Google Sheet**
-   - Go to [Google Sheets](https://sheets.google.com/)
-   - Create a new spreadsheet
-   - Name it "MedTech Hospital Submissions"
-   - Copy the Sheet ID from the URL (the long string between `/d/` and `/edit`)
-   - Share the sheet with the service account email (from the JSON file) with "Editor" access
-
-6. **Update Environment Variables**
-   Replace the placeholder values in `.env.local` with the actual values from your JSON file:
-
-```env
-GOOGLE_SHEETS_ID=1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms
-GOOGLE_PROJECT_ID=your-actual-project-id
-GOOGLE_PRIVATE_KEY_ID=your-actual-private-key-id
-GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nYour actual private key here\n-----END PRIVATE KEY-----\n"
-GOOGLE_CLIENT_EMAIL=your-service-account@your-project.iam.gserviceaccount.com
-GOOGLE_CLIENT_ID=your-actual-client-id
-```
-
-#### Testing the Application
-
-1. **Start the development server**
-   ```bash
-   npm run dev
-   ```
-
-2. **Test the landing page**
-   - Open `http://localhost:3000`
-   - Verify all sections are visible
-   - Check responsive design on different screen sizes
-
-3. **Test the ebook download**
-   - Click "View Ebook" button
-   - Fill out the form with test data
-   - Submit the form
-   - Check if data appears in Google Sheets (if configured) or in `data/submissions.json`
-
-4. **Test security features**
-   - Try right-clicking (should be disabled)
-   - Try F12 (should be disabled)
-   - Try Ctrl+Shift+I (should be disabled)
-   - Try taking a screenshot (should be prevented)
-
-#### Troubleshooting
-
-### Google Sheets Not Working
-- Check if all environment variables are correctly set
-- Verify the service account has access to the sheet
-- Check the console for error messages
-- Data will be saved locally as fallback
-
-### Form Not Submitting
-- Check browser console for errors
-- Verify all required fields are filled
-- Check network tab for API call status
-
-### Styling Issues
-- Clear browser cache
-- Restart the development server
-- Check if Tailwind CSS is properly configured
-
-#### Production Deployment
-
-### Vercel (Recommended)
-1. Push your code to GitHub
-2. Connect your repository to Vercel
-3. Add environment variables in Vercel dashboard
-4. Deploy
-
-### Other Platforms
-- Ensure environment variables are set
-- Build the project: `npm run build`
-- Start the production server: `npm start`
-
-#### Security Notes
-
-- The application includes multiple layers of screenshot protection
-- User data is securely transmitted to Google Sheets
-- Local fallback storage is available if Google Sheets fails
-- All form inputs are validated and sanitized
+- Ensure all environment variables are correctly set to avoid issues with Google Sheets integration.
+- If Google Sheets setup fails, data will be saved locally as a fallback.
+- Always clear the browser cache if you encounter styling issues.
 
 ### README.md
 
@@ -279,14 +205,6 @@ This `README.md` file provides comprehensive documentation for a modern, respons
 - **Framer Motion**: Animation library.
 - **Google Sheets API**: For optional data storage.
 
-#### Classes
-
-None
-
-#### Functions
-
-None
-
 #### Configuration
 
 - **Environment Variables**:
@@ -294,15 +212,11 @@ None
   - `GOOGLE_SERVICE_ACCOUNT_EMAIL`: Service account email (optional).
   - `GOOGLE_PRIVATE_KEY`: Service account private key (optional).
 
-#### Constants
-
-None
-
 #### Notes
 
 - The front-end security measures provide basic protection against casual screenshot attempts. For enterprise-level security, consider server-side solutions and DRM technologies.
 - Ensure all required fields in the eBook form are filled to avoid submission issues.
-- For Google Sheets integration, verify that the service account has access to the sheet and that the Google Sheets API is enabled.
+- For Google Sheets integration, verify that the service account has access to the sheet and all environment variables are correctly set.
 
 ### SCREENSHOT_PROTECTION.md
 
@@ -312,56 +226,69 @@ None
 
 #### Module Overview
 
-This file documents the screenshot protection system for the MedTech Hospital e-book website, detailing its features, implementation, configuration, and limitations.
+This file documents the screenshot protection system for the MedTech Hospital e-book website, detailing CSS-based, JavaScript-based, and advanced security features to prevent unauthorized content capture.
 
 #### Dependencies
 
-- `react`: Core library for building user interfaces.
-- `@types/react`: TypeScript definitions for React.
-- `styled-components`: For applying CSS-based protections.
-- Custom components: `ScreenshotProtection.tsx`, `ContentObfuscator.tsx`, `AdvancedSecurity.tsx`.
+- `react`: Core library for building UI components.
+- `prop-types`: Runtime type checking for React props.
+- `lodash`: Utility library for handling common programming tasks.
 
 #### Classes
 
-| Class                  | Purpose                                      | Key Methods                  |
-|------------------------|----------------------------------------------|------------------------------|
-| `ScreenshotProtection`| Main protection wrapper with configurable options | `componentDidMount`, `componentWillUnmount` |
-| `ContentObfuscator`    | Dynamic content obfuscation                  | `startObfuscation`, `stopObfuscation` |
-| `AdvancedSecurity`     | Advanced tamper and screenshot tool detection| `detectTampering`, `detectScreenshotTools` |
+| Class                 | Purpose                                                         | Key Methods                  |
+|-----------------------|-----------------------------------------------------------------|------------------------------|
+| `ScreenshotProtection` | Main protection wrapper component                               | `componentDidMount`, `componentWillUnmount` |
+| `ContentObfuscator`   | Dynamic content obfuscation                                     | `startObfuscation`, `stopObfuscation`       |
+| `AdvancedSecurity`    | Advanced tamper detection and screenshot tool detection         | `detectTampering`, `detectScreenshotTools`  |
 
 #### Functions
 
-| Function                   | Parameters                  | Returns | Description                                                  |
-|----------------------------|-----------------------------|---------|--------------------------------------------------------------|
-| `enableWatermark`          | `boolean`                   | `void`  | Enables/disables watermark overlay.                          |
-| `enableDevToolsDetection`  | `boolean`                   | `void`  | Enables/disables developer tools detection.                  |
-| `enableKeyboardProtection` | `boolean`                   | `void`  | Enables/disables keyboard shortcut blocking.                 |
-| `enableContextMenuProtection` | `boolean` | `void` | Enables/disables right-click protection.                     |
-| `enableDynamicObfuscation` | `boolean`                   | `void`  | Enables/disables dynamic content obfuscation.                |
-| `setObfuscationInterval`   | `number` (milliseconds)     | `void`  | Sets interval for content obfuscation.                      |
+| Function                  | Parameters                  | Returns | Description                                                  |
+|---------------------------|-----------------------------|---------|--------------------------------------------------------------|
+| `enableWatermark`         | `boolean`                   | `void`  | Enables/disables watermark overlay                           |
+| `enableDevToolsDetection` | `boolean`                   | `void`  | Enables/disables developer tools detection                   |
+| `enableKeyboardProtection`| `boolean`                   | `void`  | Enables/disables keyboard shortcut blocking                  |
+| `enableContextMenuProtection`| `boolean`                  | `void`  | Enables/disables right-click protection                      |
+| `enableDynamicObfuscation`| `boolean`                   | `void`  | Enables/disables dynamic content obfuscation                  |
+| `obfuscationInterval`     | `number` (milliseconds)     | `void`  | Sets interval for content obfuscation                        |
 
 #### Configuration
 
-- `enableWatermark`: Toggles watermark overlay.
-- `enableDevToolsDetection`: Toggles developer tools detection.
-- `enableKeyboardProtection`: Toggles keyboard shortcut blocking.
-- `enableContextMenuProtection`: Toggles right-click protection.
-- `enableDynamicObfuscation`: Toggles dynamic content obfuscation.
-- `obfuscationInterval`: Sets interval for content obfuscation in milliseconds.
-- `securityLevel`: Sets the level of protection (`low`, `medium`, `high`).
+### ScreenshotProtection Props
+- `enableWatermark`: Enable/disable watermark overlay
+- `enableDevToolsDetection`: Enable/disable developer tools detection
+- `enableKeyboardProtection`: Enable/disable keyboard shortcut blocking
+- `enableContextMenuProtection`: Enable/disable right-click protection
+
+### ContentObfuscator Props
+- `enableDynamicObfuscation`: Enable/disable dynamic content obfuscation
+- `obfuscationInterval`: Interval for content obfuscation (milliseconds)
+
+### Security Levels
+- `low`: Basic protection with minimal interference
+- `medium`: Moderate protection with some content obfuscation
+- `high`: Maximum protection with aggressive content protection
 
 #### Constants
 
-- `watermarkText`: Default text for watermark overlay.
-- `securityMessages`: Object containing security alert messages.
+```typescript
+const watermarkText = "CONFIDENTIAL - DO NOT SCREENSHOT";
+const securityMessages = {
+  devToolsDetected: '⚠️ Developer Tools Detected!',
+  screenshotBlocked: '⚠️ Screenshot protection is active.',
+  //... more messages
+};
+const securityLevel = 'high'; // 'low' |'medium' | 'high'
+```
 
 #### Notes
 
-- This system does not provide 100% protection. Advanced tools and methods may bypass it.
-- Some protection measures may slightly affect user experience.
-- Effectiveness varies across different browsers.
-- Regularly test and update protection measures.
-- Ensure compliance with local laws and regulations regarding content protection.
+- This system provides strong protection but cannot guarantee 100% security.
+- Some protection measures may affect user experience.
+- Protection effectiveness varies by browser.
+- Regularly test protection measures.
+- Ensure compliance with local laws and regulations.
 
 ### env.example
 
@@ -369,20 +296,29 @@ This file documents the screenshot protection system for the MedTech Hospital e-
 
 # Module Overview
 
-This file, `env.example`, contains configuration settings for interacting with Google Sheets. It holds credentials and identifiers necessary for authenticating and accessing Google Sheets within the project.
+The `env.example` file contains configuration settings for accessing Google Sheets. It includes credentials and IDs necessary for authenticating with Google's API.
 
 #### Dependencies
 
-- **Google Sheets API**: This dependency is used for accessing and manipulating Google Sheets. The credentials provided in this file are used to authenticate with the Google Sheets API.
+- **Google Sheets API**: Used for accessing and manipulating Google Sheets.
 
 #### Configuration
 
-| Configuration | Value | Description |
-|--------------|-------|-------------|
-| `GOOGLE_SHEETS_ID` | `1XpkrJF3ZfA5GZMealBfp6xUbjR5ngm6wx6-a0eSF0Zk` | The ID of the Google Sheet to interact with. |
-| `GOOGLE_PROJECT_ID` | `medtech-475803` | The project ID associated with the Google service account. |
-| `GOOGLE_SERVICE_ACCOUNT_EMAIL` | `medtech-hospital-sheets1@medtech-475803.iam.gserviceaccount.com` | The email address of the Google service account used for authentication. |
-| `GOOGLE_PRIVATE_KEY` | `-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC7yZmE6g9TSevo\nvE3qUWKnuvK+59Jj/LUfq4f4jnQRAV4N/4ITGFuMnvVzhL6rM1a8Ln4ROJpQDJWQ\np42H14XFMYffh9UpaQhtZoDWDIPcEMDHQWtKGLg5LP+8lv2dv3++j6D7lr3snehX\nqwl9Cnp7kmpWIHV92crgN+KUKJa61JV9vugZ9ureNVVVvlMXvT9p0eo5MxPGxYCV\n3u3eROE0iA94cAMlStAlsjLEeCO/Qh74YbZ+8tkIlKZB2rxEiHENE1dWetcq4ZwP\nOO8a/evPrVrhEFOV8EZrjEBFgEdXUBcSqjtYD0Mt81AVA01Ks8TBok0cbJ6vBLZA\nNiOiWK49AgMBAAECggEASMmXJmQ9BXkZJlBa2RCrrzzw21tq+tOYdwqbPRYmWfMQ\nPFfF2NXvol144UpaR2yyWWWh+tXYRl/iVzwCyV0aHjmZI2T4lEEAgbsiBBW8xH9/\n4ZvzVLipK4xMIhLaghsYjkoIyYv/2OfKB7Uli+CUYjJ54iFZuSrCjs9KlUf4SLj0\nfVWZZJN0A/X0Vg9rFZx/aNkRTlYxfo6i58iyb9mpt/btxqonqQunwL/81+L5rNaJ\ni/vOV3eVZQ3i9C6NjmyUquLf6XVblAf6A79YZAo8PhTv+aBAkwGcJDJYyVY158m3\np+un9TSriiN4Dc726bDmT+Y1QUL+0BB30gqbWPJc1wKBgQDmSWqs21uUTSvbwDej\nZUTiqCJptdGo/n/KfP60T37FsVpRkmvNaZivRqOsiuS2yhC+l1Fs7jVMX1CWwqTp\nZVYUd6AjituHRB9ezzqaZwzQm8+yJYaMTiqkOTtGgyFmvRo1XeuOtseMmQsKxy2m\nZYlCzhfaqIZHTnFHPiA76T8XAwKBgQDQwV8K5RFKz80xH/tTILCOPrNDtceEOJew\na05IHVKV5n0FYQf7EY9h4kJQG9FwPCSjrZsI1prseA2qcldE9Q3RnfSIN+euGB0s\n5DthZuqT/HtVwb0fX1T5Et+0+g4kXsaVZVv4FBWk/OOxh/46Tk3Vy5E1K5WY/3bC\nMJXEiTqBvwKBgQDS9QZn+zrVjCxVTqypXifQir2boRfDfACM+hxKCVjUuTdH6p4e\nulFIn6locoQ6frkAH5ZT95OTtu0Ybo6r0E0eysdER/v62gjyzVud/jDbGSEWzRGI\njkK51kPawF1kxG6x3KvhPMdooPpgkT3cZL9tF2b6w87em5lh7iORPoaxCQKBgF5W\nBE04Fwhnv6JjgX+fVinxy7DdhLwLlwDyfP25wohbEEROBP1AgjsJtE3fRFYj16rf\n2R+1W21hE0vjP+y5kPUZHFgya1ARNZ4DxZHOoFMf1dx7IKv8uLmV/eIa3ikxayw4\nEceZy+4zGfIwMoLGwAXNaGFOwNvTFifLLOMT4IyhAoGAOQQSKRGDQi5dJ2sR4IEm\n6NhO6wUB1ksOEqkxUoWrC5J14zU0CIpQiSXFiXNdgkCvwDRhE5zad7xxPtQ9WYCk\ny/y7ckkRynRwZwAE5yBIpYQEzG6/G+VhkeFaFbr/fRwxrUrm5nyUh3+83AHHQSSk\n1GW/
+| Configuration | Purpose |
+|---------------|---------|
+| `GOOGLE_SHEETS_ID` | The ID of the Google Sheet to interact with. |
+| `GOOGLE_PROJECT_ID` | The project ID associated with the Google Cloud project. |
+| `GOOGLE_SERVICE_ACCOUNT_EMAIL` | The email address of the service account used for authentication. |
+| `GOOGLE_PRIVATE_KEY` | The private key for the service account, used to authenticate. |
+| `GOOGLE_PRIVATE_KEY_ID` | Legacy variable for backward compatibility. |
+| `GOOGLE_CLIENT_EMAIL` | Legacy variable for backward compatibility. |
+| `GOOGLE_CLIENT_ID` | Legacy variable for backward compatibility. |
+
+#### Notes
+
+- The `GOOGLE_PRIVATE_KEY` is a long string that contains the private key in PEM format.
+- Legacy variables (`GOOGLE_PRIVATE_KEY_ID`, `GOOGLE_CLIENT_EMAIL`, `GOOGLE_CLIENT_ID`) are included for backward compatibility but should not be used in new code.
+- Ensure the service account associated with `GOOGLE_SERVICE_ACCOUNT_EMAIL` has the necessary permissions to access the specified Google Sheet.
 
 ### medtech-475803-d7421664ff6e.json
 
@@ -392,11 +328,11 @@ This file, `env.example`, contains configuration settings for interacting with G
 
 #### Module Overview
 
-This file contains a JSON object that represents a Google service account used for authenticating and authorizing access to Google Cloud services. It includes sensitive information like the private key, client email, and other credentials necessary for secure API interactions.
+This JSON file contains credentials for a Google service account used to authenticate and interact with Google APIs, specifically for accessing Google Sheets within the `medtech-475803` project. It includes the private key, client email, and other necessary details to establish a secure connection.
 
 #### Dependencies
 
-No direct dependencies are listed in this file, but it relies on Google's authentication protocols for service accounts.
+No direct dependencies are listed here, but this file relies on the Google API client libraries for Python or other supported languages to use these credentials for authentication.
 
 #### Classes
 
@@ -408,29 +344,30 @@ No direct dependencies are listed in this file, but it relies on Google's authen
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| `load_service_account_credentials` | `json_string` | `credentials object` | Loads and returns Google service account credentials from a JSON string. |
+| N/A | N/A | N/A | N/A |
 
 #### Configuration
 
-| Key | Type | Description |
+| Key | Value | Description |
 | --- | --- | --- |
-| `type` | `string` | The type of the account, always `service_account`. |
-| `project_id` | `string` | The ID of the project associated with the service account. |
-| `private_key_id` | `string` | The ID of the private key in the service account's key ring. |
-| `private_key` | `string` | The private key used for signing tokens. |
-| `client_email` | `string` | The email address of the service account. |
-| `client_id` | `string` | The OAuth 2.0 client ID. |
-| `auth_uri` | `string` | The OAuth 2.0 authentication URI. |
-| `token_uri` | `string` | The OAuth 2.0 token URI. |
-| `auth_provider_x509_cert_url` | `string` | The URL to the authentication provider's X.509 certificate. |
-| `client_x509_cert_url` | `string` | The URL to the service account's X.509 certificate. |
-| `universe_domain` | `string` | The universe domain (`googleapis.com`). |
+| `type` | `service_account` | Specifies the type of the account. |
+| `project_id` | `medtech-475803` | The ID of the GCP project associated with the service account. |
+| `private_key_id` | `d7421664ff6e9b2f3e0764fa76859a93384cb199` | Unique identifier for the private key. |
+| `private_key` | `-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n` | The private key used for authentication. |
+| `client_email` | `medtech-hospital-sheets1@medtech-475803.iam.gserviceaccount.com` | The email address of the service account. |
+| `client_id` | `118074920564929310442` | The client ID of the service account. |
+| `auth_uri` | `https://accounts.google.com/o/oauth2/auth` | The OAuth 2.0 authorization URI. |
+| `token_uri` | `https://oauth2.googleapis.com/token` | The token URI for requesting access tokens. |
+| `auth_provider_x509_cert_url` | `https://www.googleapis.com/oauth2/v1/certs` | URL to the authentication provider's X.509 certificate. |
+| `client_x509_cert_url` | `https://www.googleapis.com/robot/v1/metadata/x509/medtech-hospital-sheets1%40medtech-475803.iam.gserviceaccount.com` | URL to the service account's X.509 certificate. |
+| `universe_domain` | `googleapis.com` | The domain of the universe in which the service account exists. |
 
 #### Notes
 
-- **Security**: Handle the private key with care. It should never be exposed or logged.
-- **Usage**: This JSON is typically used to initialize service account credentials in Google Cloud applications.
-- **Validation**: Always validate the integrity of the JSON before using it to avoid authentication failures.
+- Ensure that this file is stored securely as it contains sensitive information.
+- The private key should never be exposed or shared publicly.
+- This file is used to authenticate with Google APIs, so any changes to the service account credentials will require updates in the application code that uses these credentials.
+- Always follow best practices for handling and storing JSON web tokens (JWTs) and private keys.
 
 ### next-env.d.ts
 
@@ -438,14 +375,14 @@ No direct dependencies are listed in this file, but it relies on Google's authen
 
 # next-env.d.ts
 
-This file provides TypeScript type definitions for Next.js and its image optimization features. It ensures that TypeScript can correctly type-check the Next.js framework and its image-related APIs.
+This file provides TypeScript type definitions for Next.js and its image optimization features. It ensures that TypeScript understands the types used by Next.js, enabling better type checking and autocompletion.
 
 #### Dependencies
 
 | Import | Purpose |
 | --- | --- |
-| `next` | TypeScript definitions for Next.js framework. |
-| `next/image-types/global` | TypeScript definitions for global image optimization types. |
+| `next` | Adds type definitions for Next.js core. |
+| `next/image-types/global` | Adds type definitions specifically for image optimization features in Next.js. |
 
 #### Classes
 
@@ -461,13 +398,13 @@ This file provides TypeScript type definitions for Next.js and its image optimiz
 
 #### Configuration or Constants
 
-| Name | Purpose |
+| Constant | Purpose |
 | --- | --- |
 | N/A | N/A |
 
 #### Notes
 
-- This file should not be edited directly. It is automatically generated by Next.js to provide type definitions.
+- This file should not be edited directly. It is automatically generated and maintained by Next.js.
 - For more information, refer to the [Next.js TypeScript documentation](https://nextjs.org/docs/basic-features/typescript).
 
 ### next.config.js
@@ -476,69 +413,68 @@ This file provides TypeScript type definitions for Next.js and its image optimiz
 
 # next.config.js
 
-This file configures the Next.js application, defining custom settings and headers for the app. It exists to provide specific configurations that Next.js needs to operate correctly in our environment.
+This file configures the Next.js application. It defines custom settings and headers for the application.
 
 #### Dependencies
 
-- **`next`**: The main library for Next.js, providing the framework for server-rendered React applications.
+- `import('next')`: This import brings in the Next.js configuration object, allowing for custom configuration settings.
 
 #### Functions
 
 | Function | Parameters | Returns | Description |
-| --- | --- | --- | --- |
-| `headers` | None | Array of objects | Configures HTTP headers for all routes. |
+|----------|------------|---------|-------------|
+| `headers` | None | Array of objects | Defines HTTP headers to be applied to all routes. |
 
 #### Configuration
 
-| Setting | Purpose |
-| --- | --- |
-| `headers` | Defines custom HTTP headers to be applied to all routes. |
+- `headers`: An asynchronous function that returns an array of objects defining HTTP headers to be applied to all routes.
 
 #### Notes
 
-- The `headers` function returns an array of objects, each specifying a source pattern and an array of headers to apply.
-- The `source` field uses a regex pattern to match routes.
-- Headers are specified as key-value pairs in the `headers` array within each object.
-- This configuration denies framing of the app, prevents MIME type sniffing, and sets referrer policy for cross-origin requests.
+- The `headers` function sets security-related HTTP headers to protect against clickjacking and MIME type sniffing.
+- The `source` field uses a wildcard to apply these headers to all routes.
 
 ### package.json
 
 #### Overview
 
-# package.json
+# `package.json` Documentation
 
-This file defines the project's dependencies, scripts, and versioning. It's essential for managing the project's build process and ensuring consistent installation of required packages.
+#### Module Overview
+
+This file defines the project's dependencies, scripts, and versioning. It's the heart of managing our project's build process and dependencies.
 
 #### Dependencies
 
-| Package | Purpose |
-| --- | --- |
-| `autoprefixer` | PostCSS plugin that parses CSS and automatically adds vendor prefixes to CSS rules using values from `CanIUse`. |
-| `framer-motion` | A production-ready motion library for React that provides a set of primitives to build high-quality animations. |
-| `googleapis` | Google APIs client library for JavaScript. |
-| `lucide-react` | A library of beautifully designed icons in React. |
-| `next` | A React framework for server-rendered and statically exported React applications. |
-| `postcss` | A tool for transforming CSS with JavaScript. |
-| `react` | A JavaScript library for building user interfaces. |
-| `react-dom` | A package that provides DOM-specific methods that can be used at the top level of a React application. |
-| `react-hook-form` | React hooks for forms, that keeps your form state and validation easily. |
-| `tailwindcss` | A utility-first CSS framework for rapidly building custom user interfaces. |
+| Package | Version | Purpose |
+| --- | --- | --- |
+| autoprefixer | ^10.4.16 | PostCSS plugin to parse CSS and add vendor prefixes to CSS rules using values from `Can I Use`. |
+| framer-motion | ^10.16.16 | Library for smooth animations that can be controlled with React hooks. |
+| googleapis | ^128.0.0 | Google APIs client library for JavaScript. |
+| lucide-react | ^0.294.0 | A library of high-quality icons in React. |
+| next | 14.0.4 | Framework for server-rendered React applications. |
+| postcss | ^8.4.32 | CSS next-generation post-processing tool. |
+| react | ^18 | A JavaScript library for building user interfaces. |
+| react-dom | ^18 | Library for rendering React to the DOM. |
+| react-hook-form | ^7.48.2 | Hook-based form solution for React. |
+| tailwindcss | ^3.3.6 | Utility-first CSS framework for rapid UI development. |
 
-#### Scripts
+#### DevDependencies
 
-| Script | Purpose |
-| --- | --- |
-| `dev` | Starts the Next.js development server. |
-| `build` | Builds the project for production. |
-| `start` | Starts the production build of the Next.js application. |
-| `lint` | Runs ESLint on the project files. |
+| Package | Version | Purpose |
+| --- | --- | --- |
+| @types/node | ^20 | TypeScript definitions for Node.js. |
+| @types/react | ^18 | TypeScript definitions for React. |
+| @types/react-dom | ^18 | TypeScript definitions for ReactDOM. |
+| eslint | ^8 | Plugin, tool, and unified linter for JavaScript and JSX. |
+| eslint-config-next | 14.0.4 | ESLint configuration for Next.js. |
+| typescript | ^5 | Programming language that builds on JavaScript by adding static types. |
 
 #### Notes
 
 - The `private` field is set to `true`, meaning the package is not published to the npm registry.
-- The `dependencies` section lists packages required for the project's runtime.
-- The `devDependencies` section lists packages required for development and not needed at runtime.
-- Ensure to run `npm install` to install all dependencies listed in this file.
+- Scripts defined under `scripts` are used to automate tasks like starting the development server, building the project, and linting code.
+- Ensure to run `npm install` to install all dependencies listed here.
 
 ### postcss.config.js
 
@@ -546,12 +482,12 @@ This file defines the project's dependencies, scripts, and versioning. It's esse
 
 # postcss.config.js
 
-This file configures PostCSS plugins for the project, enabling features like Tailwind CSS and Autoprefixer to process and optimize CSS.
+This file configures PostCSS plugins for the project, enabling features like Tailwind CSS and Autoprefixer.
 
 #### Dependencies
 
-- `tailwindcss`: A utility-first CSS framework for rapidly building custom user interfaces.
-- `autoprefixer`: A PostCSS plugin that parses CSS and adds vendor prefixes to CSS rules using values from "Can I Use".
+- `tailwindcss`: Integrates Tailwind CSS for utility-first CSS.
+- `autoprefixer`: Automatically adds vendor prefixes to CSS rules.
 
 #### Classes
 
@@ -567,14 +503,12 @@ This file configures PostCSS plugins for the project, enabling features like Tai
 
 #### Configuration
 
-- `tailwindcss`: Configuration for Tailwind CSS plugin.
-- `autoprefixer`: Configuration for Autoprefixer plugin.
+- `plugins`: An object containing the PostCSS plugins to be used.
 
 #### Notes
 
-- The `plugins` object defines the PostCSS plugins to be used.
-- Ensure that the PostCSS dependencies are correctly installed in `package.json`.
-- Tailwind CSS and Autoprefixer are essential for maintaining a modern and cross-browser compatible CSS.
+- Ensure that the PostCSS plugins are installed as dependencies in `package.json`.
+- Changes to this file will require a rebuild of the CSS to take effect.
 
 ### setup.js
 
@@ -584,30 +518,26 @@ This file configures PostCSS plugins for the project, enabling features like Tai
 
 **Module Overview**
 
-This file initializes the project environment by creating necessary configuration files and directories. It ensures that the `.env.local` file and `data` directory exist, providing a foundation for the application to run smoothly.
+This file initializes the environment for the MedTech Hospital Landing Page project by creating necessary configuration files and directories if they don't already exist.
 
 **Dependencies**
 
-| Import | Purpose |
+| Module | Purpose |
 | --- | --- |
-| `fs` | File system module for file operations. |
+| `fs` | File system module for file and directory operations. |
 | `path` | Module for handling and transforming file paths. |
 
 **Functions**
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| `setupEnvironment` | None | None | Initializes the project by creating `.env.local` and `data` directory if they don't exist. |
-
-**Configuration**
-
-None
+| `setupEnvironment` | None | None | Initializes the environment by checking and creating `.env.local` and `data` directories. |
 
 **Notes**
 
-- The `.env.local` file is created if it doesn't exist, containing placeholders for Google Sheets API credentials.
-- The `data` directory is created if it doesn't exist to store application data.
-- After running this script, ensure to update the `.env.local` file with actual credentials and run `npm install` to install dependencies.
+- The `.env.local` file is created with placeholders for Google Sheets API credentials if it doesn't exist.
+- The `data` directory is created if it doesn't already exist.
+- After running this script, developers should update the `.env.local` file with their actual credentials and run `npm install` to set up dependencies.
 
 ### tailwind.config.js
 
@@ -619,13 +549,13 @@ This file configures Tailwind CSS for our project. It defines which files Tailwi
 
 #### Dependencies
 
-- **tailwindcss**: The primary dependency that this configuration file is for.
+- **Tailwind CSS**: A utility-first CSS framework for rapidly building custom user interfaces.
 
 #### Classes
 
 | Class | Purpose | Key Methods |
 | --- | --- | --- |
-| N/A | This file does not define classes. It's a configuration file. | N/A |
+| None | N/A | N/A |
 
 #### Functions
 
@@ -637,14 +567,14 @@ This file configures Tailwind CSS for our project. It defines which files Tailwi
 
 | Key | Value | Description |
 | --- | --- | --- |
-| `content` | Array of file paths | Specifies the files Tailwind should scan for class names. |
-| `theme.extend.colors` | Object | Custom color palettes to extend Tailwind's default theme. |
+| `content` | Array of file paths | Specifies the paths to all of the template files Tailwind should scan for classes |
+| `theme.extend.colors` | Object | Custom color palettes to extend Tailwind's default theme |
 
 #### Notes
 
-- Ensure that the file paths in the `content` array are correct and include all necessary files.
-- The `theme.extend.colors` section allows for custom color definitions that can be used throughout the project.
-- Tailwind's configuration is very flexible, so feel free to add more customizations as needed.
+- The `content` array includes all `.js`, `.ts`, `.jsx`, `.tsx`, and `.mdx` files in the `pages`, `components`, and `app` directories.
+- Custom color palettes are defined under `theme.extend.colors` to provide specific color values for our primary and medical themes.
+- The `plugins` array is currently empty, indicating no additional Tailwind plugins are being used at this time.
 
 ### test-setup.js
 
@@ -652,31 +582,33 @@ This file configures Tailwind CSS for our project. It defines which files Tailwi
 
 # test-setup.js
 
-**Module Overview**  
-This file performs a preliminary setup check for the MedTech Hospital project. It ensures that all necessary files and dependencies are present before running the application. This helps in quickly identifying any missing components, saving time during the development process.
+#### Module Overview
 
-**Dependencies**  
-| Import | Purpose |
+`test-setup.js` is a script that ensures the MedTech Hospital project is correctly set up before running tests. It checks for the existence of essential files and dependencies, providing a summary of any missing items.
+
+#### Dependencies
+
+| Module | Purpose |
 | ------ | ------- |
 | `fs` | Provides file system operations. |
 | `path` | Handles and transforms file paths. |
 
-**Functions**  
+#### Functions
+
 | Function | Parameters | Returns | Description |
 | -------- | ---------- | ------- | ----------- |
-| None | N/A | N/A | N/A (Script-based, no functions defined) |
+| None | None | None | Executes the setup checks and prints the results. |
 
-**Configuration**  
-| Variable | Description |
-| -------- | ----------- |
-| `requiredFiles` | Array of essential files to check. |
-| `dataDir` | Path to the data directory. |
-| `requiredDeps` | List of required dependencies in `package.json`. |
+#### Configuration
 
-**Notes**  
-- This script outputs directly to the console, making it easy to spot missing files or dependencies.
-- Ensure that the `package.json` file is correctly formatted to avoid parsing errors.
-- This script does not modify any files or directories; it only checks for their existence.
+- **requiredFiles**: An array of essential files that the script checks for.
+- **dataDir**: The path to the `data` directory that the script verifies.
+
+#### Notes
+
+- This script should be run before any tests to ensure the environment is correctly set up.
+- If any files or dependencies are missing, the script will print an error message and a list of missing items.
+- For detailed setup instructions, refer to the `INSTALLATION.md` file.
 
 ### tsconfig.json
 
@@ -684,44 +616,42 @@ This file performs a preliminary setup check for the MedTech Hospital project. I
 
 # tsconfig.json
 
-This file configures the TypeScript compiler for our project. It specifies compiler options and settings that dictate how TypeScript files are compiled and processed.
+This file configures the TypeScript compiler for our project. It defines compiler options, includes and excludes files, and sets up module resolution.
 
 #### Dependencies
 
 - **TypeScript**: The primary dependency, used for compiling TypeScript files.
-- **Next.js Plugin**: Configured under `compilerOptions.plugins`, it integrates Next.js-specific features.
 
 #### Configuration
 
 | Setting | Purpose | Details |
 | --- | --- | --- |
-| `target` | Sets the ECMAScript target version | `es5` |
-| `lib` | Specifies library files to include in the compilation | `["dom", "dom.iterable", "es6"]` |
-| `allowJs` | Allows JavaScript files to be compiled | `true` |
-| `skipLibCheck` | Skips type checking of all declaration files | `true` |
-| `strict` | Enables all strict type-checking options | `true` |
-| `noEmit` | Prevents the compiler from emitting output files | `true` |
-| `esModuleInterop` | Enables interoperability between CommonJS and ES Modules | `true` |
-| `module` | Specifies the module code generation | `esnext` |
-| `moduleResolution` | Specifies the module resolution strategy | `bundler` |
-| `resolveJsonModule` | Allows importing `.json` files | `true` |
-| `isolatedModules` | Ensures each file is treated as a module | `true` |
-| `jsx` | Specifies JSX code generation | `preserve` |
-| `incremental` | Enables incremental compilation | `true` |
-| `paths` | Specifies custom module resolution | `{"@/*": ["./*"]}` |
+| `target` | JavaScript version | Set to `es5` for compatibility. |
+| `lib` | Library files to include | Includes `dom`, `dom.iterable`, and `es6`. |
+| `allowJs` | Allow JavaScript files | Set to `true` to allow `.js` files. |
+| `skipLibCheck` | Skip type checking of all declaration files | Set to `true` to speed up compilation. |
+| `strict` | Enable all strict type-checking options | Set to `true` for strict type enforcement. |
+| `noEmit` | Do not emit output files | Set to `true` to prevent emitting compiled files. |
+| `esModuleInterop` | Enables interoperability between CommonJS and ES Modules | Set to `true` for module resolution. |
+| `module` | Specify module code generation | Set to `esnext` for next-generation modules. |
+| `moduleResolution` | Module resolution preference | Set to `bundler` to use a bundler like Webpack. |
+| `resolveJsonModule` | Allow importing.json files | Set to `true` to import `.json` files as modules. |
+| `isolatedModules` | Treat each file as a module | Set to `true` for isolated module compilation. |
+| `jsx` | JSX code generation | Set to `preserve` to keep JSX syntax. |
+| `incremental` | Enable incremental compilation | Set to `true` for faster rebuilds. |
+| `paths` | Module aliases | Maps `@/*` to the root directory. |
 
 #### Notes
 
-- `noEmit: true` means the compiler won't output JavaScript files, which is useful for development environments where the bundler handles compilation.
-- `resolveJsonModule: true` allows importing `.json` files directly as modules.
-- `paths` under `compilerOptions` enables the use of `@/` alias for easier module resolution.
-- `moduleResolution: "bundler"` indicates that the module resolution is handled by the bundler (like Webpack or Next.js).
+- `noEmit` is set to `true` to prevent the compiler from generating JavaScript files, which is useful during development.
+- `isolatedModules` ensures that each file is compiled as a standalone module, which can help with tree-shaking and performance.
+- The `paths` configuration allows for cleaner imports using the `@` alias, making it easier to navigate the project structure.
 
 ### app/globals.css
 
 #### Overview
 
-# `app/globals.css` Documentation
+# `app/globals.css`
 
 #### Module Overview
 
@@ -729,42 +659,35 @@ This file contains global CSS styles, including Tailwind CSS imports and custom 
 
 #### Dependencies
 
-- `@tailwind base`: Base Tailwind CSS styles.
-- `@tailwind components`: Component-specific Tailwind CSS styles.
-- `@tailwind utilities`: Utility-first Tailwind CSS styles.
+- `@tailwind base`: Base styles from Tailwind CSS.
+- `@tailwind components`: Component-specific styles from Tailwind CSS.
+- `@tailwind utilities`: Utility-first styles from Tailwind CSS.
 
 #### Classes
 
-| Class | Purpose | Key Properties |
+| Class | Purpose | Key Methods |
 | --- | --- | --- |
-| `.screenshot-protected` | Prevents screenshot and selection | `-webkit-user-select: none`, `user-select: none` |
-| `.protected-content` | Protects content from selection and interaction | `-webkit-user-select: none`, `pointer-events: auto` |
-| `.no-capture` | Disables text selection and capture | `-webkit-user-select: none` |
-| `.watermark-overlay` | Adds a watermark overlay | `position: fixed`, `background: repeating-linear-gradient` |
-| `.watermark-text` | Watermark text style | `position: absolute`, `transform: rotate(-45deg)` |
-| `.ebook-content` | Disables text selection and copying for ebook content | `-webkit-user-select: none`, `pointer-events: none` |
-| `.no-context-menu` | Disables context menu | `-webkit-context-menu: none` |
-| `.content-blur` | Applies blur effect to sensitive content | `filter: blur(2px)` |
-| `.aggressive-protection` | Enhanced protection against content extraction | `-webkit-user-select: none`, `pointer-events: auto` |
-| `.hero-pattern` | Custom background pattern for the hospital landing page | `background-image: radial-gradient` |
-| `.card-hover` | Adds hover effect to cards | `transition: all 0.3s ease` |
-| `.card-hover:hover` | Transforms card on hover | `transform: translateY(-5px)` |
+| `.screenshot-protected` | Prevents screenshot and text selection | N/A |
+| `.protected-content` | Prevents text selection while allowing pointer events | N/A |
+| `.no-capture` | Prevents text selection | N/A |
+| `.watermark-overlay` | Adds a watermark overlay | N/A |
+| `.watermark-text` | Adds watermark text | N/A |
+| `.ebook-content` | Prevents text selection and copying for ebook content | N/A |
+| `.no-context-menu` | Disables context menu | N/A |
+| `.content-blur` | Applies blur effect to sensitive content | N/A |
+| `.aggressive-protection` | Enhanced protection against content extraction | N/A |
+| `.hero-pattern` | Custom background pattern for the hero section | N/A |
+| `.card-hover` | Adds hover effect to cards | N/A |
 
 #### Configuration
 
 - `html { scroll-behavior: smooth; }`: Enables smooth scrolling.
 - Custom scrollbar styles for improved UI.
 
-#### Constants
-
-None.
-
 #### Notes
 
-- The `.aggressive-protection` class provides the highest level of content protection and should be used for highly sensitive information.
-- The `@media print` rules ensure that protected content is not printed.
-- The custom scrollbar styles are specific to WebKit browsers.
-- The blur effect on the body when developer tools are detected is a security measure to prevent unauthorized access.
+- The `.aggressive-protection` class provides the highest level of content protection. Use sparingly.
+- The `@media (max-height: 500px) and (min-width: 800px)` query is a rudimentary attempt to detect developer tools. It's not foolproof and should not be relied upon for serious security measures.
 
 ### app/layout.tsx
 
@@ -774,15 +697,15 @@ None.
 
 #### Module Overview
 
-This file defines the root layout component for our application. It sets up the HTML structure, applies global styles, and includes metadata and security configurations.
+This file defines the root layout component for the application. It sets up the basic HTML structure, applies global styles, and includes metadata and security configurations for the entire app.
 
 #### Dependencies
 
 | Import | Purpose |
 | --- | --- |
-| `Metadata` | Type definition for metadata properties. |
+| `Metadata` | Type for metadata object. |
 | `Inter` | Custom font from `next/font/google`. |
-| `./globals.css` | Global styles for the application. |
+| `./globals.css` | Global CSS styles. |
 
 #### Classes
 
@@ -794,20 +717,20 @@ This file defines the root layout component for our application. It sets up the 
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| `RootLayout` | `{ children: React.ReactNode }` | `JSX.Element` | Renders the root HTML structure with security meta tags and applies global styles. |
+| `RootLayout` | `{ children: React.ReactNode }` | `JSX.Element` | Main layout component wrapping the entire app. |
 
 #### Configuration
 
 | Configuration | Purpose |
 | --- | --- |
-| `metadata` | Defines metadata for the application, including title, description, keywords, and security headers. |
+| `metadata` | Defines metadata for the app, including title, description, keywords, and security headers. |
 
 #### Notes
 
 - The `RootLayout` component wraps the entire application and sets up the HTML structure.
-- Security headers are included in the `head` section to protect against clickjacking, MIME type sniffing, and control referrer information.
+- Global security headers and policies are included in the `head` section to enhance security.
+- The `Inter` font is applied globally to the body for consistent typography.
 - The `dangerouslySetInnerHTML` script tag includes inline JavaScript for additional security measures.
-- The `Inter` font is applied globally to the body of the application.
 
 ### app/page.tsx
 
@@ -817,119 +740,120 @@ This file defines the root layout component for our application. It sets up the 
 
 #### Module Overview
 
-This file defines the main page component for the MedTech Hospital website. It includes sections for services, statistics, features, and contact information, along with a hero section and a modal for an eBook download.
+This file defines the main page component for the MedTech Hospital website. It includes sections for services, statistics, features, and contact information, along with a header and a footer.
 
 #### Dependencies
 
 - `useState` from `react`: Manages state within the component.
 - Icons from `lucide-react`: Provides SVG icon components.
 - `EbookModal` from `./components/EbookModal`: Modal component for displaying the eBook.
-- `ScreenshotProtection` from `./components/ScreenshotProtection`: Component to protect content from being captured.
+- `ScreenshotProtection` from `./components/ScreenshotProtection`: Component for protecting content from screenshots and other forms of capture.
 
 #### Functions
 
 | Function | Parameters | Returns | Description |
-| --- | --- | --- | --- |
+|----------|------------|---------|-------------|
 | `Home` | None | JSX.Element | Renders the main page component. |
 
-#### Constants
+#### Configuration
 
-| Constant | Type | Description |
-| --- | --- | --- |
-| `services` | Array of Objects | List of medical services offered by the hospital. |
-| `stats` | Array of Objects | Statistics about the hospital. |
+- `services`: Array of service objects with `icon`, `title`, and `description`.
+- `stats`: Array of statistic objects with `number` and `label`.
 
 #### Notes
 
-- The `ScreenshotProtection` component is used to prevent content from being captured via screenshots or other means. It includes options for watermarking, dev tools detection, keyboard protection, and context menu protection.
-- The `EbookModal` is triggered by clicking the "View eBook" button in the hero section.
-- The `services` and `stats` arrays are used to dynamically render content in their respective sections.
+- The `ScreenshotProtection` component is used to protect the content from being captured via screenshots, dev tools, keyboard, and context menu.
+- The `EbookModal` is triggered by the "View eBook" button in the Hero Section.
+- The `services` and `stats` arrays are hardcoded in this component. Consider fetching them from an API or a CMS for dynamic content.
 
 ### app/admin/page.tsx
 
 #### Overview
 
-# `app/admin/page.tsx`
-
-Renders the admin dashboard page, displaying hospital form submissions and providing download options.
+# Module Overview
+Displays the admin dashboard for managing hospital form submissions. Fetches and displays submission data, provides download options, and shows recent submissions in a table.
 
 #### Dependencies
 
-- `useState`, `useEffect` from `react`: Manage state and side effects.
-- `Download`, `FileSpreadsheet`, `Database`, `Users` from `lucide-react`: Icons for UI elements.
+- `useState`, `useEffect` from `react`: For managing component state and side effects.
+- `Download`, `FileSpreadsheet`, `Database`, `Users` from `lucide-react`: Icons used in the UI.
 
 #### Functions
 
-| Function         | Parameters | Returns | Description                                                                                       |
-| ---------------- | ---------- | ------- | -------------------------------------------------------------------------------------------------- |
-| `AdminPage`      | None       | JSX.Element | Main component rendering the admin dashboard, fetching and displaying submissions, and providing download options. |
-| `fetchSubmissions` | None       | void    | Fetches hospital form submissions from the API and updates the component state.                    |
-| `downloadCSV`    | None       | void    | Downloads a CSV file of hospital form submissions from the API.                                   |
+| Function         | Parameters | Returns | Description |
+|------------------|------------|---------|-------------|
+| `AdminPage`      | None       | JSX     | Main component rendering the admin dashboard. Fetches submissions on mount and provides UI for viewing and downloading data. |
+| `fetchSubmissions` | None       | Promise | Fetches submission data from the API and updates the component state. |
+| `downloadCSV`    | None       | Promise | Downloads a CSV file of submissions from the API. |
 
 #### Notes
 
-- The `fetchSubmissions` function is called on component mount using `useEffect`.
+- The `fetchSubmissions` function is called once on component mount using `useEffect`.
 - The `downloadCSV` function creates a temporary anchor element to trigger the file download.
-- The component displays a loading spinner while fetching submissions.
-- Error states are handled and displayed to the user.
-- Only the first 50 submissions are displayed in the data table for performance reasons.
+- Error handling is done using `try...catch` blocks, and errors are displayed in the UI.
+- The table only shows the first 50 submissions for performance reasons.
 
 ### app/api/download-csv/route.ts
 
 #### Overview
 
-# Module Overview
+# app/api/download-csv/route.ts
 
-This file defines a single API route for downloading a CSV file containing form submissions. It checks if the CSV file exists, reads it, and returns it as a downloadable file.
+#### Module Overview
+
+This file defines a single API route for downloading a CSV file containing form submissions. It handles file existence checks, reads the CSV file, and serves it for download.
 
 #### Dependencies
 
 | Import | Purpose |
 | --- | --- |
-| `NextRequest`, `NextResponse` | Types from Next.js for handling HTTP requests and responses. |
-| `promises as fs` | File system promises from Node.js for file operations. |
-| `path` | Utility for handling and transforming file paths. |
+| `NextRequest`, `NextResponse` | From `next/server`, used for handling HTTP requests and responses in Next.js. |
+| `promises as fs` | From Node.js `fs` module, provides file system promises for asynchronous file operations. |
+| `path` | Used for handling and transforming file paths. |
 
 #### Functions
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| `GET` | `request: NextRequest` | `NextResponse` | Handles GET requests to download the CSV file. |
+| `GET` | `request: NextRequest` | `NextResponse` | Handles GET requests to serve the CSV file for download. |
 
 #### Notes
 
-- The CSV file is located at `data/form-submissions.csv`.
-- If the CSV file does not exist, a 404 error response is returned.
-- If an error occurs during file access or reading, a 500 error response is returned.
-- The CSV file is served with a `Content-Disposition` header to prompt a download.
+- The file path for the CSV is constructed using `process.cwd()` to ensure it's relative to the current working directory.
+- If the CSV file does not exist, a 404 response is returned with an error message.
+- If an error occurs during file reading or response creation, a 500 response is returned with an error message.
+- The CSV file is served with appropriate `Content-Type` and `Content-Disposition` headers to trigger a file download in the browser.
 
 ### app/api/get-submissions/route.ts
 
 #### Overview
 
-# Module Overview
+# app/api/get-submissions/route.ts
 
-This file defines a route handler for the `/api/get-submissions` endpoint in a Next.js application. It reads form submissions from a local JSON file and returns them in reverse order, showing the most recent submissions first.
+#### Module Overview
 
-# Dependencies
+This file defines a route handler for fetching form submissions from a JSON file. It reads the submissions from a local file and returns them in reverse order, showing the newest submissions first.
+
+#### Dependencies
 
 | Import | Purpose |
 | --- | --- |
-| `NextRequest`, `NextResponse` | Types from `next/server` for handling HTTP requests and responses. |
-| `promises as fs` | File system operations using Node.js promises. |
-| `path` | Utility for handling and transforming file paths. |
+| `NextRequest`, `NextResponse` | Handle HTTP requests and responses in Next.js. |
+| `promises as fs` | File system operations using promises. |
+| `path` | Resolve file paths. |
 
-# Functions
+#### Functions
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
 | `GET` | `request: NextRequest` | `NextResponse` | Handles GET requests by reading form submissions from a JSON file and returning them. |
 
-# Notes
+#### Notes
 
-- The file checks if `form-submissions.json` exists before attempting to read it. If the file does not exist, it returns an empty array with a 200 status code.
-- If an error occurs during file access or reading, it logs the error and returns a 500 status code with a failure message.
-- Submissions are returned in reverse order to display the most recent submissions first.
+- The file `form-submissions.json` is checked for existence before attempting to read it.
+- If the file does not exist, an empty array is returned with a 200 status code.
+- If an error occurs during file operations, a 500 status code with an error message is returned.
+- Submissions are parsed from the JSON file and returned in reverse order to show the newest first.
 
 ### app/api/submit-form/route.ts
 
@@ -939,112 +863,108 @@ This file defines a route handler for the `/api/get-submissions` endpoint in a N
 
 #### Module Overview
 
-This file defines the API route for submitting form data. It handles incoming POST requests, validates the form data, and saves it both locally and to Google Sheets.
+This file handles form submissions by processing the data, saving it to a local file, and optionally to a Google Sheet. It's part of the API routes in a Next.js application.
 
 #### Dependencies
 
 | Import | Purpose |
 | --- | --- |
-| `NextRequest`, `NextResponse` | Handles incoming HTTP requests and responses in a Next.js API route. |
-| `fs.promises` | Provides promise-based file system operations for saving data locally. |
+| `NextRequest`, `NextResponse` | From `next/server`, used for handling HTTP requests and responses. |
+| `fs.promises` | Provides promise-based file system operations. |
 | `path` | Provides utilities for working with file and directory paths. |
-| `google` | Provides access to Google APIs, specifically Google Sheets in this case. |
+| `google` | From `googleapis`, used for interacting with Google Sheets API. |
 
 #### Functions
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
 | `saveToLocalFile` | `data: FormData` | `Promise<boolean>` | Saves form data to a local JSON and CSV file. |
-| `saveToGoogleSheets` | `data: FormData` | `Promise<boolean>` | Saves form data to a Google Sheet. |
-| `POST` | `request: NextRequest` | `Promise<NextResponse>` | Handles POST requests, validates data, and saves it locally and to Google Sheets. |
+| `saveToGoogleSheets` | `data: FormData` | `Promise<boolean>` | Saves form data to a Google Sheet if credentials are configured. |
+| `POST` | `request: NextRequest` | `Promise<NextResponse>` | Handles POST requests to submit form data. |
 
 #### Configuration
 
 | Variable | Purpose |
 | --- | --- |
 | `GOOGLE_SHEETS_ID` | Google Sheets ID for storing form data. |
-| `GOOGLE_SERVICE_ACCOUNT_EMAIL` | Email of the Google service account used for authentication. |
-| `GOOGLE_PRIVATE_KEY` | Private key of the Google service account for authentication. |
+| `GOOGLE_SERVICE_ACCOUNT_EMAIL` | Service account email for Google Sheets API authentication. |
+| `GOOGLE_PRIVATE_KEY` | Private key for Google Sheets API authentication. |
 
 #### Notes
 
 - The `saveToLocalFile` function ensures the data directory exists before attempting to save the file.
 - The `saveToGoogleSheets` function checks if the Google Sheets credentials are configured before attempting to save data.
-- The `POST` function validates all required fields before saving the data. If any field is missing, it returns a 400 status code with an error message.
-- If saving to local storage fails, the function still attempts to save to Google Sheets. If both fail, it returns a 500 status code with an error message.
-- Google Sheets credentials are optional. If not configured, the function logs a message and continues without saving to Google Sheets.
+- The `POST` function validates required form fields before processing the submission.
+- If saving to local files fails, the function still attempts to save to Google Sheets.
+- Error handling is implemented to log errors and return appropriate HTTP responses.
 
 ### app/components/AdvancedSecurity.tsx
 
 #### Overview
 
-# **app/components/AdvancedSecurity.tsx**
+# Module Overview
 
-#### Module Overview
-
-This file implements a React component that provides advanced security features to protect sensitive content from being tampered with or screenshotted. It detects common developer tools, debugging activities, and screenshot tools, and responds by disabling certain actions and displaying a warning message.
+The `app/components/AdvancedSecurity.tsx` file implements a React component that enhances the security of the application by detecting and responding to potential security threats such as the use of developer tools, debuggers, and screenshot applications. It provides visual feedback and restricts user interaction when a security violation is detected.
 
 #### Dependencies
 
 | Import | Purpose |
 | --- | --- |
 | `useEffect`, `useState` from `react` | React hooks for managing side effects and state. |
+| `useSecurityUtils` from `utils/securityUtils` | Custom hook that provides functions to check for security threats. |
 
 #### Classes
 
-| Class | Purpose | Key Methods |
-| --- | --- | --- |
-| None | N/A | N/A |
+There are no classes in this file.
 
 #### Functions
 
-| Function | Parameters | Returns | Description |
-| --- | --- | --- | --- |
-| `AdvancedSecurity` | `{ children: React.ReactNode }` | `JSX.Element` | A React component that wraps children with advanced security features. |
+There are no standalone functions in this file.
 
 #### Configuration
 
-There are no specific configurations in this file. The security level and other settings are managed internally within the component.
+There are no specific configurations in this file.
 
 #### Notes
 
-- The methods used to detect tampering are heuristic and may not catch all possible ways of inspecting or screenshotting the content.
-- The security measures are reactive and may not prevent all forms of content theft.
-- The component relies on the browser's environment and may not work as expected in non-standard or restricted environments.
-- The alert messages and styles can be customized as needed to fit the application's design.
+- The `checkDevTools` function detects if developer tools are open by comparing the `outerHeight` and `outerWidth` of the window to the `innerHeight` and `innerWidth`.
+- The `checkDebugger` function measures the time taken to hit a `debugger` statement to detect if a debugger is attached.
+- The `monitorConsole` function overrides the `console.log` method to detect console usage.
+- The `checkScreenshotTools` function checks the `userAgent` for known screenshot tool names.
+- The `applySecurityStyles` function applies CSS styles to the content based on the security level and whether a security violation has been detected.
+- The component uses an interval to periodically check for open developer tools and debuggers.
+- The `monitorConsole` function is called with `false` in the cleanup function of the interval to restore the original `console.log` method.
+- The `isTampered` state is used to determine if a security violation has been detected, and if so, it displays a warning message and applies security styles to the content.
+- Ensure that the `useSecurityUtils` hook is properly mocked or stubbed during testing to avoid false positives.
 
 ### app/components/AggressiveProtection.tsx
 
 #### Overview
 
-### Module Overview
+# Module Overview
 
-The `AggressiveProtection.tsx` file implements a component that provides aggressive protection against potential content theft or unauthorized access by monitoring user interactions and applying various protective measures.
+The `AggressiveProtection.tsx` file implements a React component that provides aggressive protection against unauthorized content access, such as screenshots and content inspection. It dynamically adjusts the level of protection based on detected suspicious activities.
 
-### Dependencies
+#### Dependencies
 
 | Import | Purpose |
 |--------|---------|
-| `useEffect`, `useRef`, `useState` | React hooks for managing side effects, references, and state. |
+| `useEffect`, `useRef`, `useState` from `react` | React hooks for managing side effects, references, and state. |
+| `applyProtection`, `detectInspection`, `detectScreenshotAttempts` from `../../utils/protectionUtils` | Utility functions to apply protection measures and detect suspicious activities. |
 
-### Classes
-
-| Class | Purpose | Key Methods |
-|-------|---------|-------------|
-| None | This file does not define any classes. |
-
-### Functions
+#### Functions
 
 | Function | Parameters | Returns | Description |
 |----------|------------|---------|-------------|
-| `AggressiveProtection` | `{ children: React.ReactNode, enableAggressiveMode?: boolean }` | JSX element | A React functional component that wraps children with aggressive protection logic. |
+| `AggressiveProtection` | `{ children: React.ReactNode, enableAggressiveMode?: boolean }` | JSX Element | A React component that wraps children with aggressive protection. |
 
-### Notes
+#### Notes
 
-- The `enableAggressiveMode` prop, when set to `true`, activates the aggressive protection features.
-- The component uses several event listeners to detect suspicious activities such as rapid mouse movements, specific keyboard combinations, and right-clicks.
-- Protection level is reset periodically to avoid indefinite blocking.
-- When suspicious activity is detected, the component can hide or blur the content to prevent unauthorized access.
+- The `enableAggressiveMode` prop controls whether aggressive protection measures are active. It defaults to `true`.
+- The component uses two `useEffect` hooks to monitor and respond to suspicious activities.
+- The `protectionLevel` state variable tracks the level of protection, which decreases over time if no suspicious activities are detected.
+- If suspicious activities are detected, the component blocks access to the content and displays a warning message.
+- The `containerRef` is used to reference the protected content container, allowing for direct manipulation of its styles and properties.
 
 ### app/components/CanvasProtection.tsx
 
@@ -1052,37 +972,37 @@ The `AggressiveProtection.tsx` file implements a component that provides aggress
 
 # CanvasProtection.tsx
 
-This file provides a React component that overlays a canvas with a pattern to protect content from screen capture and other forms of unauthorized copying.
+This file creates a React component that overlays a canvas with a protective pattern to prevent content from being easily captured or copied.
 
 #### Dependencies
 
 | Import | Purpose |
 | --- | --- |
-| `useEffect`, `useRef`, `useState` from `react` | React hooks for managing side effects, references, and state. |
+| `useEffect`, `useRef`, `useState` from `react` | React hooks for side effects, refs, and state management. |
 
 #### Functions
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| `CanvasProtection` | `children: React.ReactNode`, `enableCanvasRendering?: boolean` | `React.ReactNode` | A component that conditionally renders a canvas with a protection pattern if `enableCanvasRendering` is true. |
+| `CanvasProtection` | `children`, `enableCanvasRendering` | JSX element | Renders a container with an optional canvas overlay for protection. |
+
+#### Configuration
+
+- `enableCanvasRendering`: Boolean prop to toggle canvas rendering. Defaults to `true`.
 
 #### Notes
 
-- The canvas is only rendered if `enableCanvasRendering` is true.
-- The canvas size is dynamically adjusted to match its container.
-- A protection pattern is drawn on the canvas, which includes diagonal lines, watermark text, and random noise.
-- The pattern is redrawn every 2 seconds and adjusts on window resize.
-- The canvas is set to `pointerEvents: 'none'` to ensure it does not interfere with user interactions on the underlying content.
+- The canvas overlay uses a blend mode of `multiply` to ensure it interacts with the underlying content.
+- The protection pattern includes diagonal lines, watermark text, and random noise to deter content capture.
+- The pattern redraws every 2 seconds and adjusts to the container size on window resize.
 
 ### app/components/ContentObfuscator.tsx
 
 #### Overview
 
-# app/components/ContentObfuscator.tsx
+# `app/components/ContentObfuscator.tsx`
 
-#### Module Overview
-
-This file defines the `ContentObfuscator` component, which dynamically obfuscates content to enhance security. It blurs and dims the content at intervals and on mouse movement, providing an additional layer of protection.
+This file defines a React component that dynamically obfuscates content to enhance security. It obfuscates the content by applying a blur and brightness filter, and the obfuscation can be triggered by time intervals or mouse movements.
 
 #### Dependencies
 
@@ -1094,83 +1014,85 @@ This file defines the `ContentObfuscator` component, which dynamically obfuscate
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| `ContentObfuscator` | `children`, `enableDynamicObfuscation`, `obfuscationInterval` | JSX element | Renders obfuscated content based on props. |
-
-#### Configuration
-
-| Prop | Type | Default | Description |
-| --- | --- | --- | --- |
-| `children` | `React.ReactNode` | N/A | The content to be obfuscated. |
-| `enableDynamicObfuscation` | `boolean` | `true` | Enables or disables dynamic obfuscation. |
-| `obfuscationInterval` | `number` | `3000` | The interval for obfuscation in milliseconds. |
+| `ContentObfuscator` | `children`, `enableDynamicObfuscation`, `obfuscationInterval` | JSX element | Renders the children with dynamic obfuscation applied. |
 
 #### Notes
 
-- The `obfuscationInterval` is divided by two to make the obfuscation more frequent.
-- Mouse movement triggers an additional obfuscation with a 1-second delay.
-- Ensure to clean up intervals and timeouts in the `useEffect` cleanup function to avoid memory leaks.
+- The `enableDynamicObfuscation` prop controls whether obfuscation is active.
+- The `obfuscationInterval` prop sets the interval for automatic obfuscation.
+- Mouse movement can also trigger obfuscation if `enableDynamicObfuscation` is true.
+- The component uses CSS classes and inline styles to apply the obfuscation effect.
+- The `key` attribute on the root `div` forces a re-render when the obfuscation key changes, ensuring the effect is applied correctly.
 
 ### app/components/EbookModal.tsx
 
 #### Overview
 
-# `app/components/EbookModal.tsx`
-
-#### Module Overview
-
-Displays a modal for users to fill out a form and access a protected eBook. Implements various security measures to protect the eBook content.
+# Module Overview
+Displays a modal for users to fill out a form and access an eBook. Manages form submission, displays success message, and shows the eBook content with various security protections.
 
 #### Dependencies
 
 - `useState` from `react`: Manages component state.
-- `useForm` from `react-hook-form`: Handles form state and validation.
-- Icons from `lucide-react`: Provides visual elements.
-- Security components: `ScreenshotProtection`, `ContentObfuscator`, `AdvancedSecurity`, `CanvasProtection`, `AggressiveProtection` - Apply various security measures to the eBook content.
+- `useForm` from `react-hook-form`: Handles form validation and submission.
+- `X`, `Download`, `Loader2` from `lucide-react`: Provides icons used in the modal.
+- `ScreenshotProtection`, `ContentObfuscator`, `AdvancedSecurity`, `CanvasProtection`, `AggressiveProtection`: Security components to protect eBook content.
 
 #### Functions
 
-| Function           | Parameters                     | Returns | Description                                                                                       |
-|---------------------|--------------------------------|---------|---------------------------------------------------------------------------------------------------|
-| `EbookModal`        | `isOpen: boolean`, `onClose: () => void` | JSX.Element | Renders the modal. Displays form or eBook content based on state. |
+| Function         | Parameters                    | Returns | Description                                                                                       |
+| ---------------- | ----------------------------- | ------- | ------------------------------------------------------------------------------------------------- |
+| `EbookModal`     | `isOpen: boolean`, `onClose: () => void` | `React.ReactNode` | Renders the eBook modal. Displays form, success message, or eBook content based on state. |
 
 #### Notes
 
-- The modal uses multiple layers of security to protect the eBook content.
+- Modal is only rendered when `isOpen` is `true`.
 - Form submission triggers a POST request to `/api/submit-form`.
-- Successful form submission displays a success message, then shows the eBook after a 2-second delay.
-- The eBook content is only shown if form submission is successful.
-- Closing the modal resets the form and hides the eBook.
+- Various security components are used to protect the eBook content from unauthorized access.
+- Ensure to handle edge cases like network errors during form submission.
 
 ### app/components/ScreenshotProtection.tsx
 
 #### Overview
 
-# `app/components/ScreenshotProtection.tsx`
+# Module Overview
 
-#### Module Overview
-
-This file contains the `ScreenshotProtection` component, which provides various protections against unauthorized screenshots and content capture. It includes features like watermark overlay, dev tools detection, keyboard shortcut blocking, context menu disabling, and print prevention.
+The `ScreenshotProtection.tsx` file provides a React component that protects sensitive content from being screenshotted or copied by implementing various protection mechanisms. It's designed to be used as a wrapper around sensitive components or pages.
 
 #### Dependencies
 
-- `react`: For hooks and JSX syntax.
-- `useEffect`, `useRef`, `useState`: React hooks used for side effects, referencing DOM elements, and state management.
+| Import | Purpose |
+| --- | --- |
+| `useEffect`, `useRef`, `useState` | React hooks for managing side effects, references, and state. |
+| `detectDevTools`, `handleKeyDown`, `handleContextMenu`, `handleVisibilityChange`, `handleBeforePrint` | Utility functions from `protectionUtils` to handle different protection mechanisms. |
+
+#### Classes
+
+| Class | Purpose | Key Methods |
+| --- | --- | --- |
+| `ScreenshotProtection` | Main component that wraps children with various protections. | N/A |
 
 #### Functions
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| `ScreenshotProtection` | `children: React.ReactNode`, `enableWatermark?: boolean`, `enableDevToolsDetection?: boolean`, `enableKeyboardProtection?: boolean`, `enableContextMenuProtection?: boolean` | `React.ReactNode` | Main component function that renders protected content with optional protections. |
-| `WatermarkOverlay` | None | `React.ReactNode` | Renders a watermark overlay if `enableWatermark` is true. |
+| `ScreenshotProtection` | `children`, `enableWatermark`, `enableDevToolsDetection`, `enableKeyboardProtection`, `enableContextMenuProtection` | JSX element | Renders protected content with optional watermark, dev tools detection, keyboard protection, and context menu protection. |
+
+#### Configuration
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `enableWatermark` | boolean | `true` | Enables/disables the watermark overlay. |
+| `enableDevToolsDetection` | boolean | `true` | Enables/disables detection of developer tools. |
+| `enableKeyboardProtection` | boolean | `true` | Enables/disables keyboard event protection. |
+| `enableContextMenuProtection` | boolean | `true` | Enables/disables context menu protection. |
 
 #### Notes
 
-- The component uses multiple detection methods to identify when developer tools are open, including checking for differences in `window.outerHeight` and `window.innerHeight`.
-- When developer tools are detected, the content is blurred, pointer events are disabled, and the content is hidden after 3 seconds.
-- Keyboard shortcuts like F12, Ctrl+Shift+I, and others are blocked to prevent manual opening of developer tools.
-- Context menu, selection, and drag events are prevented to stop right-click and select actions.
-- Printing is disabled to prevent content capture via print.
-- The watermark overlay is rendered as semi-transparent, animated text to deter screenshots.
+- The component relies on CSS classes for styling. Ensure the classes `watermark-overlay`, `watermark-text`, `no-capture`, `no-context-menu`, and others are defined in your stylesheets.
+- The watermark overlay is randomized in position and animation delay to make it harder to bypass.
+- The alert for developer tools detection is displayed as a modal overlay when developer tools are detected.
+- This component should be used sparingly and only on pages that truly require such protections due to potential usability issues.
 
 ### app/config/security.ts
 
@@ -1180,42 +1102,50 @@ This file contains the `ScreenshotProtection` component, which provides various 
 
 #### Module Overview
 
-This file defines the security configurations and constants used across the application to protect sensitive content from unauthorized access and copying.
+This file defines the security configurations and constants used throughout the application to protect sensitive content from unauthorized access and copying.
 
 #### Dependencies
 
 | Import | Purpose |
 | --- | --- |
 | `SecurityConfig` | Interface defining the structure of security settings. |
-| `defaultSecurityConfig` | Default values for security settings. |
+| `defaultSecurityConfig` | Default settings for security features. |
 | `securityMessages` | Messages displayed to users for various security events. |
 | `blockedKeys` | List of keys that are blocked for security reasons. |
 | `blockedKeyCombinations` | List of key combinations that are blocked for security reasons. |
 | `suspiciousUserAgents` | List of user agents that are considered suspicious. |
 | `securityCSS` | CSS rules to prevent selection and copying of protected content. |
 
+#### Classes
+
+| Class | Purpose | Key Methods |
+| --- | --- | --- |
+| `SecurityConfig` | Defines the structure of security settings. | N/A |
+
+#### Functions
+
+| Function | Parameters | Returns | Description |
+| --- | --- | --- | --- |
+| N/A | N/A | N/A | N/A |
+
 #### Configuration
 
-| Configuration | Default Value | Description |
+| Variable | Type | Description |
 | --- | --- | --- |
-| `enableScreenshotProtection` | `true` | Enables protection against screenshots. |
-| `enableDevToolsDetection` | `true` | Enables detection of developer tools. |
-| `enableKeyboardProtection` | `true` | Enables protection against certain keyboard shortcuts. |
-| `enableContextMenuProtection` | `true` | Enables protection against right-click context menus. |
-| `enableWatermark` | `true` | Enables watermarking of protected content. |
-| `enableContentObfuscation` | `true` | Enables content obfuscation to deter copying. |
-| `enableAdvancedSecurity` | `true` | Enables advanced security measures. |
-| `watermarkText` | `'CONFIDENTIAL - DO NOT SCREENSHOT'` | Text to display as a watermark. |
-| `obfuscationInterval` | `5000` | Interval in milliseconds for content obfuscation. |
-| `securityLevel` | `'high'` | The overall security level of the application. |
+| `defaultSecurityConfig` | `SecurityConfig` | Default security settings. |
+| `securityMessages` | `object` | Messages for security events. |
+| `blockedKeys` | `string[]` | List of blocked keys. |
+| `blockedKeyCombinations` | `Array<{ ctrl: boolean, shift: boolean, key: string }>` | List of blocked key combinations. |
+| `suspiciousUserAgents` | `string[]` | List of suspicious user agents. |
+| `securityCSS` | `string` | CSS rules for security protection. |
 
 #### Notes
 
-- Ensure that the `defaultSecurityConfig` is reviewed and updated as necessary to match the security requirements of the application.
-- The `securityMessages` should be kept clear and concise to avoid alarming users unnecessarily.
-- The `blockedKeys` and `blockedKeyCombinations` should be reviewed periodically to ensure they cover all necessary security concerns.
-- The `suspiciousUserAgents` list should be updated to include new tools that might be used to bypass security measures.
-- The `securityCSS` rules are important for preventing content from being easily copied or selected. Ensure they are applied correctly in the application.
+- The `defaultSecurityConfig` object sets most security features to `true` by default, indicating a high level of security.
+- The `securityMessages` object contains user-facing messages for various security events.
+- The `blockedKeys` and `blockedKeyCombinations` arrays list keys and key combinations that are disabled for security reasons.
+- The `suspiciousUserAgents` array contains user agents that are flagged as potentially suspicious.
+- The `securityCSS` string contains CSS rules to prevent selection and copying of protected content.
 
 ### data/form-submissions.csv
 
@@ -1223,30 +1153,34 @@ This file defines the security configurations and constants used across the appl
 
 # data/form-submissions.csv
 
-This file captures submissions from user forms, storing detailed information about each form entry. It's used to track and analyze user interactions with our application.
+This file captures form submission data from users, including timestamps, user details, and educational information. It exists to provide a structured log of user interactions with our forms.
 
 #### Dependencies
 
 - **pandas**: Used for data manipulation and analysis.
+- **csv**: Standard library for reading CSV files.
 
 #### Classes
 
 | Class | Purpose | Key Methods |
-| --- | --- | --- |
-| `FormSubmission` | Represents a single form submission entry. | `to_dict()` |
+|-------|---------|------------|
+| None  | N/A     | N/A        |
 
 #### Functions
 
 | Function | Parameters | Returns | Description |
-| --- | --- | --- | --- |
-| `load_submissions()` | `file_path` | `DataFrame` | Loads form submissions from CSV into a pandas DataFrame. |
-| `save_submissions()` | `df`, `file_path` | `None` | Saves a DataFrame of form submissions to CSV. |
+|----------|------------|---------|-------------|
+| read_csv | file_path  | DataFrame | Reads CSV file into a pandas DataFrame. |
+
+#### Configuration or Constants
+
+- **None**
 
 #### Notes
 
-- The timestamps are in Unix epoch format.
-- Phone numbers are repeated across entries, indicating potential data entry issues.
-- Ensure to validate data before saving to avoid inconsistencies.
+- The timestamps are in Unix format (milliseconds since epoch).
+- The file is expected to be updated regularly with new form submissions.
+- Ensure that the CSV file is well-formed; missing or malformed entries can cause data processing issues.
 
 ### data/form-submissions.json
 
@@ -1254,37 +1188,36 @@ This file captures submissions from user forms, storing detailed information abo
 
 # Module Overview
 
-`data/form-submissions.json` contains an array of JSON objects representing individual form submissions. Each object includes details about the user who submitted the form, such as their full name, email, mobile number, college information, and a timestamp of when the form was submitted.
+`data/form-submissions.json` contains a list of JSON objects representing individual form submissions. Each submission includes user details and metadata like timestamp and unique ID. This file is crucial for tracking and analyzing user interactions with our forms.
 
-# Dependencies
+#### Dependencies
 
-No dependencies are directly imported in this file, but it is expected to be read and processed by other modules in the codebase.
+No direct imports are used in this file.
 
-# Classes
+#### Classes
 
 | Class | Purpose | Key Methods |
-| --- | --- | --- |
-| None | N/A | N/A |
+|-------|---------|------------|
+| None  | N/A     | N/A        |
 
-# Functions
+#### Functions
 
 | Function | Parameters | Returns | Description |
-| --- | --- | --- | --- |
-| `loadSubmissions` | None | Array of form submission objects | Loads the form submissions from the JSON file. |
-| `getSubmissionById` | `submissionId` | Form submission object | Retrieves a specific form submission by its unique ID. |
+|----------|------------|----------|-------------|
+| None     | N/A        | N/A      | N/A         |
 
-# Notes
+#### Configuration
 
-- Each form submission is uniquely identified by the `id` field.
-- The `timestamp` field is in ISO 8601 format and includes timezone information.
-- Ensure that the JSON file is correctly formatted; malformed JSON can cause parsing errors.
-- The `mobileNumber` field contains duplicate values, which may indicate a data entry issue.
+No configuration settings are defined in this file.
 
-## Code Improvements Applied
+#### Constants
 
-- Added regression tests for high-risk files:
-  - `app/components/ScreenshotProtection.tsx`
-  - `app/components/AggressiveProtection.tsx`
-  - `app/components/AdvancedSecurity.tsx`
-- Proposed extracting shared utility code into a dedicated module.
-- Updated documentation to reflect structural changes.
+No constants are defined in this file.
+
+#### Notes
+
+- Each submission is a JSON object with user details and metadata.
+- The `timestamp` field is in ISO 8601 format.
+- The `id` field is a unique identifier for each submission.
+- Duplicate entries may occur if the same user submits the form multiple times.
+
